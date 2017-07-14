@@ -1,11 +1,20 @@
 # Lab 9 XOR
-# This example does not work
 import tensorflow as tf
 import numpy as np
-tf.set_random_seed(777)  # for reproducibility
 
-x_data = np.array([[0, 0], [0, 1], [1, 0], [1, 1]], dtype=np.float32)
-y_data = np.array([[0], [1], [1], [0]], dtype=np.float32)
+tf.set_random_seed(777)  # for reproducibility
+learning_rate = 0.01
+
+x_data = [[0, 0],
+          [0, 1],
+          [1, 0],
+          [1, 1]]
+y_data = [[0],
+          [1],
+          [1],
+          [0]]
+x_data = np.array(x_data, dtype=np.float32)
+y_data = np.array(y_data, dtype=np.float32)
 
 X = tf.placeholder(tf.float32, [None, 2], name='x-input')
 Y = tf.placeholder(tf.float32, [None, 1], name='y-input')
@@ -36,7 +45,7 @@ with tf.name_scope("cost") as scope:
     cost_summ = tf.summary.scalar("cost", cost)
 
 with tf.name_scope("train") as scope:
-    train = tf.train.GradientDescentOptimizer(learning_rate=0.01).minimize(cost)
+    train = tf.train.AdamOptimizer(learning_rate=learning_rate).minimize(cost)
 
 # Accuracy computation
 # True if hypothesis>0.5 else False
@@ -49,7 +58,7 @@ with tf.Session() as sess:
     # tensorboard --logdir=./logs/xor_logs
     merged_summary = tf.summary.merge_all()
     writer = tf.summary.FileWriter("./logs/xor_logs_r0_01")
-    writer.add_graph(sess.graph) # Show the graph
+    writer.add_graph(sess.graph)  # Show the graph
 
     # Initialize TensorFlow variables
     sess.run(tf.global_variables_initializer())
@@ -69,10 +78,10 @@ with tf.Session() as sess:
 
 
 '''
-Hypothesis:  [[ 0.01338218]
- [ 0.98166394]
- [ 0.98809403]
- [ 0.01135799]]
+Hypothesis:  [[  6.13103184e-05]
+ [  9.99936938e-01]
+ [  9.99950767e-01]
+ [  5.97514772e-05]]
 Correct:  [[ 0.]
  [ 1.]
  [ 1.]

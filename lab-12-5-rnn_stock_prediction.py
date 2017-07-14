@@ -42,11 +42,11 @@ def MinMaxScaler(data):
 
 
 # train Parameters
-timesteps = seq_length = 7
+seq_length = 7
 data_dim = 5
 hidden_dim = 10
 output_dim = 1
-learing_rate = 0.01
+learning_rate = 0.01
 iterations = 500
 
 # Open, High, Low, Volume, Close
@@ -88,7 +88,7 @@ Y_pred = tf.contrib.layers.fully_connected(
 # cost/loss
 loss = tf.reduce_sum(tf.square(Y_pred - Y))  # sum of the squares
 # optimizer
-optimizer = tf.train.AdamOptimizer(learing_rate)
+optimizer = tf.train.AdamOptimizer(learning_rate)
 train = optimizer.minimize(loss)
 
 # RMSE
@@ -108,9 +108,9 @@ with tf.Session() as sess:
 
     # Test step
     test_predict = sess.run(Y_pred, feed_dict={X: testX})
-    rmse = sess.run(rmse, feed_dict={
+    rmse_val = sess.run(rmse, feed_dict={
                     targets: testY, predictions: test_predict})
-    print("RMSE: {}".format(rmse))
+    print("RMSE: {}".format(rmse_val))
 
     # Plot predictions
     plt.plot(testY)
